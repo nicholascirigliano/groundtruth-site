@@ -1,1 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ground Truth — Personalized AI News</title>
+  <meta name="description" content="Ground Truth delivers personalized AI and ML news, summarized so you can stay informed without the noise." />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121a32;
+      --text: #f5f7ff;
+      --muted: #b4bdd6;
+      --accent: #4f8cff;
+      --card: #151f3d;
+      --border: rgba(255, 255, 255, 0.12);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f4f7ff;
+        --bg-soft: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --accent: #1d4ed8;
+        --card: #ffffff;
+        --border: rgba(15, 23, 42, 0.12);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at 20% -10%, #22418f55 0%, transparent 45%), var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      width: min(1100px, 92vw);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 20px 0;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      font-size: 1.1rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 64px 0 56px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 0 auto 28px;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .cta {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 600;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      padding: 10px 0 42px;
+    }
+
+    .feature {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .privacy {
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 30px;
+    }
+
+    .privacy h2 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .privacy p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 18px 0 30px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 800px) {
+      .features { grid-template-columns: 1fr; }
+      .hero { padding-top: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <div class="brand">Ground Truth</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Personalized AI & ML news.<br />Signal over noise.</h1>
+      <p>
+        Ground Truth helps you stay current with trustworthy AI coverage, tailored to your preferred sources,
+        with concise summaries designed for fast daily reading.
+      </p>
+      <a class="cta" href="privacy.html">View Privacy Policy</a>
+    </section>
+
+    <section id="features" class="features" aria-label="Product features">
+      <article class="feature">
+        <h3>Source-based feed</h3>
+        <p>Choose the publishers you trust and filter your feed to what matters most to you.</p>
+      </article>
+      <article class="feature">
+        <h3>Fast summaries</h3>
+        <p>Read neutral, factual summaries and open original articles whenever you want deeper context.</p>
+      </article>
+      <article class="feature">
+        <h3>Smart alerts</h3>
+        <p>Get notified when newly published stories match your selected sources and interests.</p>
+      </article>
+    </section>
+
+    <section class="privacy" aria-label="Privacy policy link">
+      <h2>Privacy Policy</h2>
+      <p>
+        We publish a public privacy policy for users, app review, and compliance.
+        Read it here: <a href="privacy.html">groundtruthai.app/privacy.html</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container">
+    © <span id="year"></span> Ground Truth. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
 
