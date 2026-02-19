@@ -1,4 +1,103 @@
- <main class="container">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ground Truth Support</title>
+  <meta name="description" content="Support for Ground Truth." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f9fc;
+      --text: #0b1220;
+      --muted: #5f6b7a;
+      --blue: rgb(0, 122, 255);
+      --border: #e6ebf2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(920px, 92vw);
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .top-links a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-left: 16px;
+    }
+
+    main {
+      padding: 38px 0 42px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .notice {
+      margin-top: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+<main class="container">
+   <body>
     <h1>Privacy Policy</h1>
     <p class="meta">Effective date: <span id="effective-date"></span></p>
 
@@ -24,3 +123,5 @@
         <li>To operate, maintain, and improve app reliability and performance.</li>
       </ul>
     </section>
+   <body>
+</main>
