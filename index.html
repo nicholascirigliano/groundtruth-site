@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy</title>
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --text: #111111;
+      --secondary: #6b7280;
+      --section-spacing: 18px;
+      --max-width: 700px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000;
+        --text: #f5f5f5;
+        --secondary: #9ca3af;
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      padding: 24px 18px 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .updated {
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--secondary);
+      margin-bottom: 24px;
+    }
+
+    section {
+      margin-bottom: var(--section-spacing);
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    p, li {
+      font-size: 0.98rem;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Privacy Policy</h1>
+    <div class="updated">Last updated: February 2026</div>
+
+    <section>
+      <h2>Overview</h2>
+      <p>
+        Ground Truth provides AI news feeds and personalized source preferences.
+        This policy explains what data is collected, how it is used, and how you
+        can control or delete your data.
+      </p>
+    </section>
+
+    <section>
+      <h2>Data We Collect</h2>
+      <ul>
+        <li>Account information from sign-in (such as email and display name)</li>
+        <li>Source preferences you select in the app</li>
+        <li>Device push token for notification delivery</li>
+        <li>Basic app usage and error information needed for operation</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How We Use Data</h2>
+      <ul>
+        <li>To authenticate your account</li>
+        <li>To save and load your source preferences</li>
+        <li>To send push notifications for new matching articles</li>
+        <li>To operate, secure, and improve app reliability</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Data Storage</h2>
+      <p>
+        User preferences are stored in Firebase/Firestore by user ID.
+        Article and summary data are stored in PostgreSQL.
+        Push tokens are stored to support notification delivery.
+      </p>
+    </section>
+
+    <section>
+      <h2>Third-Party Services</h2>
+      <p>Ground Truth uses:</p>
+      <ul>
+        <li>Firebase Authentication</li>
+        <li>Firebase Firestore</li>
+        <li>Firebase Cloud Messaging (APNs)</li>
+        <li>OpenAI (for article summaries and classification)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Your Controls</h2>
+      <ul>
+        <li>You can update source preferences at any time in Source Selection.</li>
+        <li>You can disable notifications in iOS Settings.</li>
+        <li>You can delete your account from Profile, which removes your auth account and stored user preferences.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>For privacy questions, contact the app administrator.</p>
+    </section>
+
+  </div>
+</body>
+</html>
