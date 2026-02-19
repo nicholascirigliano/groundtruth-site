@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ground Truth Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for Ground Truth." />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f7f9fc;
+      --text: #0b1220;
+      --muted: #5f6b7a;
+      --blue: rgb(0, 122, 255);
+      --border: #e6ebf2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    .container {
+      width: min(920px, 92vw);
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .top-links a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-left: 16px;
+    }
+
+    main {
+      padding: 38px 0 42px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .meta {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .notice {
+      margin-top: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      margin-top: 26px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.1rem;
+    }
+
+    p {
+      margin: 8px 0;
+      color: #253246;
+    }
+
+    ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      color: #253246;
+    }
+
+    li { margin: 6px 0; }
+
+    a { color: var(--blue); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 18px 0 30px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <img src="assets/groundtruth-logo.png" alt="Ground Truth logo" />
+        <span>Ground Truth</span>
+      </a>
+      <nav class="top-links">
+        <a href="index.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Privacy Policy</h1>
+    <p class="meta">Effective date: <span id="effective-date"></span></p>
+
+    <p class="notice">
+      This page describes how Ground Truth collects, uses, and stores information when you use the app.
+    </p>
+
+    <section>
+      <h2>1. Information We Collect</h2>
+      <ul>
+        <li>Account identifiers from authentication providers (e.g., Apple or Google sign-in).</li>
+        <li>Your selected news source preferences.</li>
+        <li>Device notification token used for push notification delivery.</li>
+        <li>App usage and basic diagnostic metadata needed for service reliability.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. How We Use Information</h2>
+      <ul>
+        <li>To personalize your feed based on selected sources.</li>
+        <li>To send push notifications for new matching articles.</li>
+        <li>To operate, maintain, and improve app reliability and performance.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Data Storage</h2>
+      <ul>
+        <li>User preferences are stored in Firebase/Firestore and associated with your user ID.</li>
+        <li>Articles and summaries are stored in PostgreSQL.</li>
+        <li>Push tokens are stored in backend tables for notification delivery.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Third-Party Services</h2>
+      <ul>
+        <li>Firebase Authentication and Firestore</li>
+        <li>Firebase Cloud Messaging (APNs)</li>
+        <li>OpenAI (for article summarization/classification)</li>
+        <li>Railway (backend and database hosting)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Your Choices</h2>
+      <ul>
+        <li>You can update source preferences in the app.</li>
+        <li>You can disable push notifications in iOS Settings.</li>
+        <li>You can request account deletion from within the app.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>6. Contact</h2>
+      <p>
+        For privacy questions, contact: <a href="mailto:privacy@groundtruthai.app">privacy@groundtruthai.app</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="container">
+    <span>© <span id="year"></span> Ground Truth</span>
+    <span><a href="index.html">Back to Home</a></span>
+  </footer>
+
+  <script>
+    const now = new Date();
+    document.getElementById('year').textContent = now.getFullYear();
+    document.getElementById('effective-date').textContent = now.toLocaleDateString(undefined, {
+      year: 'numeric', month: 'long', day: 'numeric'
+    });
+  </script>
+</body>
+</html>
