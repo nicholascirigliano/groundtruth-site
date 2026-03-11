@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Ground Truth Shorts Player</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #player {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+  <div id="player"></div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const videoID = params.get("video_id");
+    const autoplay = params.get("autoplay") === "1" ? 1 : 0;
+    const mute = params.get("mute") === "0" ? 0 : 1;
+    const loop = params.get("loop") === "0" ? 0 : 1;
+
+    function postMessageToApp(name, payload) {
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers[name]) {
+        window.webkit.messageHandlers[name].postMessage(payload);
+      }
+    }
+
+    if (!videoID) {
+      postMessageToApp("shortPlayerError", "missing_video_id");
+    }
+
+    let player = null;
+
+    function onYouTubeIframeAPIReady() {
+      if (!videoID) return;
+
+      player = new YT.Player("player", {
+        width: "100%",
+        height: "100%",
+        videoId: videoID,
+        playerVars: {
+          playsinline: 1,
+          autoplay: autoplay,
+          mute: mute,
+          controls: 0,
+          rel: 0,
+          loop: loop,
+          playlist: loop ? videoID : undefined
+        },
+        events: {
+          onReady: onPlayerReady,
+          onError: onPlayerError
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      if (mute) {
+        event.target.mute();
+      }
+      if (autoplay) {
+        event.target.playVideo();
+      }
+      postMessageToApp("shortPlayerReady", "ready");
+    }
+
+    function onPlayerError(event) {
+      postMessageToApp("shortPlayerError", event.data);
+    }
+
+    window.pauseShort = function pauseShort() {
+      if (player && typeof player.pauseVideo === "function") {
+        player.pauseVideo();
+      }
+    };
+
+    window.playShort = function playShort() {
+      if (player && typeof player.playVideo === "function") {
+        if (mute && typeof player.mute === "function") {
+          player.mute();
+        }
+        player.playVideo();
+      }
+    };
+  </script>
+</body>
+</html>
