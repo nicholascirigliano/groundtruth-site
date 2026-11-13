@@ -106,6 +106,8 @@
     .nav-links { display: flex; align-items: center; gap: 26px; }
     .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.94rem; font-weight: 500; transition: color .15s; }
     .nav-links a:hover { color: var(--text); }
+    /* The nav link color above would otherwise turn the button's text grey */
+    .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #fff; }
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 9px;
       font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;

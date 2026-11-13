@@ -3,124 +3,165 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ground Truth Support</title>
-  <meta name="description" content="Support for Ground Truth app users." />
+  <title>Support · Ground Truth</title>
+  <meta name="description" content="Help with the Ground Truth app: notifications, briefings, sources, the widget, the newsletter, and your account." />
+  <meta name="theme-color" content="#070b14" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f6f8fc" media="(prefers-color-scheme: light)" />
+  <link rel="icon" href="assets/groundtruth-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #fff;
-      --text: #0b1220;
-      --muted: #5f6b7a;
-      --blue: rgb(0, 122, 255);
-      --border: #e6ebf2;
-      --surface: #f7f9fc;
+      --bg: #070b14; --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.09);
+      --text: #eef2fb; --muted: #96a3b8; --blue: #3b8cff; --blue-2: #0a6cff; --glow: rgba(59,140,255,0.28);
+    }
+    @media (prefers-color-scheme: light) {
+      :root { --bg: #f6f8fc; --surface: rgba(255,255,255,0.8); --border: rgba(15,30,60,0.09); --text: #0b1220; --muted: #556175; --glow: rgba(59,140,255,0.16); }
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+    body { margin: 0; font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 520px; pointer-events: none; background: radial-gradient(560px 300px at 80% 0%, var(--glow), transparent 70%); }
+    a { color: var(--blue); }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+    .container { width: min(1140px, 100% - 32px); margin: 0 auto; }
+    .narrow { width: min(820px, 100% - 32px); margin: 0 auto; }
+    header { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); background: color-mix(in srgb, var(--bg) 72%, transparent); border-bottom: 1px solid var(--border); }
+    .nav { height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none; color: var(--text); }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; }
+    .nav-links { display: flex; gap: 22px; align-items: center; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-weight: 500; font-size: 0.94rem; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.btn { color: #fff; background: linear-gradient(180deg, var(--blue), var(--blue-2)); padding: 8px 14px; border-radius: 12px; font-weight: 600; }
+    main { position: relative; padding: 56px 0 72px; }
+    .kicker { color: var(--blue); font-weight: 700; font-size: 0.82rem; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { margin: 8px 0 8px; font-size: clamp(2.2rem, 5vw, 3rem); letter-spacing: -0.03em; line-height: 1.1; }
+    .lede { color: var(--muted); font-size: 1.08rem; margin: 0 0 30px; }
+    .contact {
+      display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap;
+      border: 1px solid var(--border); border-radius: 20px; padding: 22px 24px; margin-bottom: 44px;
+      background: radial-gradient(400px 200px at 100% 0%, rgba(59,140,255,0.14), transparent 70%), var(--surface);
     }
-    .container { width: min(860px, 92vw); margin: 0 auto; }
-    header { border-bottom: 1px solid var(--border); }
-    .nav {
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .brand {
-      font-weight: 700;
-      text-decoration: none;
-      color: var(--text);
-    }
-    .nav a {
-      text-decoration: none;
-      color: var(--blue);
-      font-weight: 600;
-      font-size: 0.95rem;
-      margin-left: 16px;
-    }
-    main { padding: 40px 0 36px; }
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.9rem, 4.5vw, 2.6rem);
-      line-height: 1.15;
-    }
-    .subtitle {
-      margin: 0 0 22px;
-      color: var(--muted);
-      max-width: 720px;
-    }
-    .card {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-    .card h2 {
-      margin: 0 0 8px;
-      font-size: 1.08rem;
-    }
-    .card p, .card li { color: #253246; margin: 0; }
-    .card ul { margin: 10px 0 0; padding-left: 18px; }
-    .email-link {
-      display: inline-block;
-      margin-top: 10px;
-      text-decoration: none;
-      color: #fff;
-      background: var(--blue);
-      padding: 10px 14px;
-      border-radius: 10px;
-      font-weight: 600;
-    }
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 14px 0 24px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    footer a { color: var(--blue); text-decoration: none; }
+    .contact strong { display: block; font-size: 1.1rem; }
+    .contact span { color: var(--muted); }
+    .contact a.btn { color: #fff; text-decoration: none; font-weight: 600; background: linear-gradient(180deg, var(--blue), var(--blue-2)); padding: 11px 18px; border-radius: 12px; white-space: nowrap; }
+    h2 { font-size: 1.3rem; margin: 0 0 14px; letter-spacing: -0.01em; }
+    .faq { display: grid; gap: 10px; margin-bottom: 40px; }
+    details { border-radius: 16px; border: 1px solid var(--border); background: var(--surface); padding: 16px 20px; }
+    summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--blue); font-weight: 700; font-size: 1.2rem; line-height: 1; }
+    details[open] summary::after { content: "–"; }
+    details p, details li { color: var(--muted); }
+    details p { margin: 10px 0 0; }
+    details ol, details ul { margin: 10px 0 0; padding-left: 22px; }
+    details li { margin: 4px 0; }
+    footer { border-top: 1px solid var(--border); padding: 28px 0 40px; color: var(--muted); font-size: 0.9rem; position: relative; }
+    .footer-row { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--text); }
+    @media (max-width: 600px) { .nav-links a:not(.btn) { display: none; } main { padding-top: 40px; } }
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
-      <a class="brand" href="index.html">Ground Truth</a>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="privacy.html">Privacy Policy</a>
+      <a class="brand" href="index.html"><img src="assets/groundtruth-logo.png" alt="" /><span>Ground Truth</span></a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="index.html#features">Features</a>
+        <a href="privacy.html">Privacy</a>
+        <a class="btn" href="https://apps.apple.com/us/app/groundtruth-ai/id6759272723" target="_blank" rel="noopener noreferrer">Get the app</a>
       </nav>
     </div>
   </header>
 
-  <main class="container">
-    <h1>Support</h1>
-    <p class="subtitle">
-      Need help with Ground Truth? Contact us and we’ll get back to you as soon as possible.
-    </p>
+  <main class="narrow">
+    <div class="kicker">Support</div>
+    <h1>How can we help?</h1>
+    <p class="lede">Answers to common questions about the Ground Truth app and newsletter. Still stuck? Email us and we'll get back to you.</p>
 
-    <section class="card">
-      <h2>Contact Support</h2>
-      <p>Email us for account, notification, or app issues:</p>
-      <a class="email-link" href="mailto:support@groundtruthai.app">support@groundtruthai.app</a>
-    </section>
+    <div class="contact">
+      <div>
+        <strong>Contact support</strong>
+        <span>Account, notification, newsletter, or app issues</span>
+      </div>
+      <a class="btn" href="mailto:support@groundtruthai.app">support@groundtruthai.app</a>
+    </div>
 
+    <h2>Notifications &amp; briefings</h2>
+    <div class="faq">
+      <details>
+        <summary>I'm not getting notifications</summary>
+        <ol>
+          <li>Make sure you're signed in to Ground Truth.</li>
+          <li>Check that notifications are allowed in iOS Settings → Notifications → Ground Truth.</li>
+          <li>Check that you follow at least one source in Profile → Source Selection. Alerts are only sent for new stories from sources you follow.</li>
+        </ol>
+      </details>
+      <details>
+        <summary>How do daily and weekly briefings work?</summary>
+        <p>Turn them on in Profile → Briefings. The daily briefing arrives around 8am your local time with the top stories from your sources. The weekly briefing arrives Monday mornings and includes Numbers of the week. If you turn on both, Monday's weekly briefing takes the place of that day's daily one, so you only get one notification each morning.</p>
+      </details>
+      <details>
+        <summary>How do I add the Home Screen widget?</summary>
+        <p>Long-press an empty area of your Home Screen, tap Edit → Add Widget, search for Ground Truth, and choose a size. You can also long-press the Ground Truth app icon and pick a widget size. The widget shows today's briefing for the sources you follow.</p>
+      </details>
+    </div>
+
+    <h2>Sources &amp; summaries</h2>
+    <div class="faq">
+      <details>
+        <summary>How do I change my sources?</summary>
+        <p>Go to Profile → Source Selection. Sources are listed A to Z, and you can search by name. Your feed, briefings, widget, and alerts all follow your selection.</p>
+      </details>
+      <details>
+        <summary>What does "See it in the source" do?</summary>
+        <p>Each key fact is checked against the original article word for word. Tapping "See it in the source" opens the article in Safari at the exact sentence the fact came from.</p>
+      </details>
+      <details>
+        <summary>I think a summary or fact is wrong</summary>
+        <p>Please let us know at <a href="mailto:support@groundtruthai.app">support@groundtruthai.app</a> with the article title or a screenshot. Accuracy is the whole point of Ground Truth, so we review every report.</p>
+      </details>
+    </div>
+
+    <h2>Newsletter</h2>
+    <div class="faq">
+      <details>
+        <summary>I signed up but didn't get the confirmation email</summary>
+        <p>Check your Promotions and Spam folders for an email from briefing@mail.groundtruthai.app, then click "Confirm subscription". You can sign up again on the <a href="index.html#newsletter">homepage</a> to resend it.</p>
+      </details>
+      <details>
+        <summary>How do I unsubscribe?</summary>
+        <p>Use the Unsubscribe link at the bottom of any Ground Truth Weekly email, or turn off "Weekly email newsletter" in the app under Profile → Briefings.</p>
+      </details>
+    </div>
+
+    <h2>Account</h2>
+    <div class="faq">
+      <details>
+        <summary>Where are my saved articles?</summary>
+        <p>Go to Profile → Saved Articles. Save an article with the bookmark button on the article page, or by swiping left on a story in the feed. Saved articles sync to your account.</p>
+      </details>
+      <details>
+        <summary>How do I delete my account?</summary>
+        <p>Go to Profile → Delete Account. This permanently deletes your account, settings, saved articles, newsletter subscription, and notification history. If iOS asks you to sign in again first, sign out, sign back in, and try again. See the <a href="privacy.html">Privacy Policy</a> for details.</p>
+      </details>
+    </div>
   </main>
 
-  <footer class="container">
-    <span>© <span id="year"></span> Ground Truth</span>
-    <span><a href="mailto:support@groundtruthai.app">support@groundtruthai.app</a></span>
+  <footer>
+    <div class="container footer-row">
+      <span>© <span id="year"></span> Ground Truth</span>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#newsletter">Newsletter</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="https://apps.apple.com/us/app/groundtruth-ai/id6759272723" target="_blank" rel="noopener noreferrer">App Store</a>
+      </div>
+    </div>
   </footer>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
