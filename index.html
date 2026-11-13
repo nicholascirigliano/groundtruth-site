@@ -3,415 +3,665 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ground Truth — Personalized AI News</title>
-  <meta name="description" content="Personalized AI and ML news, summarized for you." />
+  <title>Ground Truth — AI news, straight from the source</title>
+  <meta name="description" content="Ground Truth turns official announcements from OpenAI, Anthropic, Google DeepMind, NVIDIA and more into short, neutral summaries, with every key fact linked to the sentence it came from." />
+  <meta name="theme-color" content="#070b14" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#f6f8fc" media="(prefers-color-scheme: light)" />
+  <meta property="og:title" content="Ground Truth — AI news, straight from the source" />
+  <meta property="og:description" content="Verified summaries of official AI announcements. Every key fact links to the exact sentence in the source." />
+  <meta property="og:image" content="https://groundtruthai.app/assets/groundtruth-logo.png" />
+  <meta property="og:url" content="https://groundtruthai.app/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="apple-itunes-app" content="app-id=6759272723" />
+  <link rel="icon" href="assets/groundtruth-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <style>
+    /* ---------- Theme (dark first, adapts to light) ---------- */
     :root {
-      --bg: #ffffff;
-      --surface: #f7f9fc;
-      --text: #0b1220;
-      --muted: #5f6b7a;
-      --blue: rgb(0, 122, 255);
-      --blue-soft: rgba(0, 122, 255, 0.12);
-      --border: #e6ebf2;
+      --bg: #070b14;
+      --bg-2: #0b1222;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-2: rgba(255, 255, 255, 0.07);
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #eef2fb;
+      --muted: #96a3b8;
+      --faint: #5d6a80;
+      --blue: #3b8cff;
+      --blue-2: #0a6cff;
+      --cyan: #39d0ff;
+      --green: #34d399;
+      --orange: #fb923c;
+      --glow: rgba(59, 140, 255, 0.35);
+      --phone: #0d1424;
+      --phone-screen: #0a0f1c;
+      --logo-filter: brightness(0) invert(1);
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
     }
 
-    @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme: light) {
       :root {
-        --bg: #0b1220;
-        --surface: #111827;
-        --text: #f3f4f6;
-        --muted: #9ca3af;
-        --border: #1f2937;
+        --bg: #f6f8fc;
+        --bg-2: #eef3fb;
+        --surface: rgba(255, 255, 255, 0.75);
+        --surface-2: #ffffff;
+        --border: rgba(15, 30, 60, 0.09);
+        --text: #0b1220;
+        --muted: #556175;
+        --faint: #8a95a8;
+        --glow: rgba(59, 140, 255, 0.22);
+        --phone: #0d1424;
+        --phone-screen: #ffffff;
+        --logo-filter: brightness(0);
+        --shadow: 0 30px 70px rgba(20, 40, 80, 0.18);
       }
-
-      header { background: #0b1220; }
-      .logo-chip { background: #111827; }
     }
 
     * { box-sizing: border-box; }
-
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .container { width: min(1140px, 100% - 32px); margin: 0 auto; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 8px; }
 
-    .container {
-      width: min(1080px, 92vw);
-      margin: 0 auto;
+    /* Background glow */
+    .bg-glow {
+      position: absolute; inset: 0 0 auto 0; height: 900px; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(600px 380px at 75% 10%, var(--glow), transparent 70%),
+        radial-gradient(500px 320px at 10% 30%, rgba(57, 208, 255, 0.12), transparent 70%);
     }
+    .bg-grid {
+      position: absolute; inset: 0 0 auto 0; height: 900px; pointer-events: none; z-index: 0; opacity: 0.35;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, #000 30%, transparent 75%);
+    }
+    main, header, footer { position: relative; z-index: 1; }
 
+    /* ---------- Nav ---------- */
     header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: saturate(160%) blur(14px);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      background: color-mix(in srgb, var(--bg) 72%, transparent);
       border-bottom: 1px solid var(--border);
-      background: #fff;
-      position: sticky;
-      top: 0;
-      z-index: 10;
     }
-
-    .nav {
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .nav { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -0.01em; text-decoration: none; }
+    .brand img { width: 32px; height: 32px; border-radius: 9px; }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.94rem; font-weight: 500; transition: color .15s; }
+    .nav-links a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+      border-radius: 12px; border: 1px solid transparent; padding: 11px 18px; transition: transform .15s, background .15s, border-color .15s;
     }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(180deg, var(--blue), var(--blue-2)); color: #fff; box-shadow: 0 8px 24px rgba(10, 108, 255, 0.35); }
+    .btn-ghost { background: var(--surface); color: var(--text); border-color: var(--border); }
+    .btn-small { padding: 8px 14px; font-size: 0.9rem; }
+    .btn svg { width: 18px; height: 18px; fill: currentColor; flex: none; }
+    .appstore { padding: 12px 20px 12px 16px; }
+    .appstore span { display: grid; line-height: 1.1; text-align: left; }
+    .appstore small { font-size: 0.68rem; font-weight: 500; opacity: 0.85; }
+    .appstore strong { font-size: 1.05rem; }
+    .appstore svg { width: 24px; height: 24px; }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
+    /* ---------- Hero ---------- */
+    .hero { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 56px; align-items: center; padding: 72px 0 56px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; width: fit-content;
+      padding: 6px 12px 6px 8px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface);
+      font-size: 0.84rem; font-weight: 600; color: var(--muted);
     }
-
-    .brand img {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-
-    .nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 0.95rem;
-      margin-left: 18px;
-    }
-
-    .nav a.primary {
-      color: var(--blue);
-      font-weight: 600;
-    }
-
-    .hero {
-      padding: 64px 0 36px;
-      display: grid;
-      gap: 22px;
-    }
-
-    .pill {
-      background: var(--blue-soft);
-      color: var(--blue);
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 0.86rem;
-      padding: 6px 12px;
-      border: 1px solid rgba(0, 122, 255, 0.2);
-      width: fit-content;
-    }
-
+    .eyebrow b { background: linear-gradient(90deg, var(--blue), var(--cyan)); color: #fff; font-size: 0.72rem; padding: 3px 8px; border-radius: 999px; }
     h1 {
-      margin: 0;
-      font-size: clamp(2.1rem, 5vw, 3.4rem);
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      max-width: 760px;
+      margin: 18px 0 16px; font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1.02; letter-spacing: -0.035em; font-weight: 800;
     }
+    .gradient-text { background: linear-gradient(92deg, var(--blue) 0%, var(--cyan) 55%, #8b9dff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lede { margin: 0 0 28px; font-size: 1.15rem; color: var(--muted); max-width: 560px; }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .hero-proof { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 26px; color: var(--muted); font-size: 0.9rem; }
+    .hero-proof span { display: inline-flex; align-items: center; gap: 7px; }
+    .hero-proof svg { width: 16px; height: 16px; color: var(--green); }
 
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.08rem;
-      max-width: 700px;
+    /* Phone mockup */
+    .stage { position: relative; display: flex; justify-content: center; min-height: 680px; padding-top: 64px; }
+    .phone {
+      position: relative; width: 300px; height: 610px; border-radius: 48px; padding: 12px;
+      background: linear-gradient(160deg, #26324a, var(--phone) 40%);
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,0.08);
     }
-
-    .appstore-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(0,0,0,0.12);
-      text-decoration: none;
-      color: var(--text);
-      background: #fff;
-      font-weight: 600;
-      width: fit-content;
+    .screen {
+      position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden;
+      background: var(--phone-screen); color: var(--text); padding: 46px 18px 18px; font-size: 12.5px;
     }
+    @media (prefers-color-scheme: light) { .screen { color: #0b1220; } }
+    .island { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 92px; height: 26px; border-radius: 20px; background: #000; }
+    .screen .bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: 700; font-size: 13px; }
+    .screen .bar i { width: 26px; height: 26px; border-radius: 50%; background: var(--surface-2); display: grid; place-items: center; font-style: normal; color: var(--muted); }
+    .screen h3 { margin: 0 0 6px; font-size: 16px; line-height: 1.25; letter-spacing: -0.01em; }
+    .screen .meta { color: var(--muted); font-size: 11px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .screen .meta img { width: 13px; height: 13px; filter: var(--logo-filter); }
+    .screen p { margin: 0 0 12px; color: var(--muted); line-height: 1.5; }
+    @media (prefers-color-scheme: light) { .screen p { color: #3d4757; } }
+    .facts h4 { margin: 0 0 8px; font-size: 13px; }
+    .fact { display: grid; grid-template-columns: 6px 1fr; gap: 9px; margin-bottom: 9px; }
+    .fact::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); margin-top: 6px; }
+    .fact span { display: block; }
+    .fact a { color: var(--blue); font-weight: 600; font-size: 11px; text-decoration: none; }
+    .verified { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 10.5px; margin-top: 4px; }
+    .verified svg { width: 13px; height: 13px; color: var(--green); flex: none; }
 
-    .cards {
-      margin-top: 26px;
-      margin-bottom: 36px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+    /* Floating cards around the phone */
+    .float {
+      position: absolute; border-radius: 18px; padding: 12px 14px; border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--bg-2) 82%, transparent);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35); font-size: 12.5px;
+      animation: bob 6s ease-in-out infinite;
     }
+    .float-notif { top: 0; left: 0; width: 280px; display: grid; grid-template-columns: 34px 1fr; gap: 10px; }
+    .float-notif img { width: 34px; height: 34px; border-radius: 9px; }
+    .float-notif b { font-size: 12px; }
+    .float-notif small { color: var(--muted); display: block; font-size: 11.5px; line-height: 1.35; }
+    .float-notif .when { float: right; color: var(--faint); font-size: 10.5px; }
+    .float-widget { bottom: 40px; right: -56px; width: 210px; animation-delay: -3s; }
+    .float-widget .label { color: var(--blue); font-weight: 700; font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 4px; }
+    .float-widget strong { display: block; font-size: 13px; line-height: 1.3; }
+    .float-widget small { display: block; color: var(--muted); margin-top: 6px; font-size: 11px; }
+    .float-streak { bottom: 18px; left: 0; animation-delay: -1.5s; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .float-streak span { color: var(--orange); }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @media (prefers-reduced-motion: reduce) { .float { animation: none; } html { scroll-behavior: auto; } .btn:hover { transform: none; } }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
+    /* ---------- Logo wall ---------- */
+    .logos { padding: 28px 0 56px; text-align: center; }
+    .logos p { margin: 0 0 22px; color: var(--muted); font-size: 0.92rem; font-weight: 500; }
+    .logo-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 30px 42px; }
+    .logo-row img { height: 26px; width: auto; max-width: 110px; object-fit: contain; filter: var(--logo-filter); opacity: 0.62; transition: opacity .2s; }
+    .logo-row img:hover { opacity: 1; }
+    .logo-row img.wide { height: 22px; }
+    /* Multi-color marks that don't survive a single-color silhouette */
+    .logo-row img.keep-detail { filter: grayscale(1) contrast(1.1); height: 30px; }
+
+    /* ---------- Sections ---------- */
+    section.block { padding: 72px 0; }
+    .section-head { max-width: 680px; margin: 0 auto 44px; text-align: center; }
+    .kicker { color: var(--blue); font-weight: 700; font-size: 0.82rem; letter-spacing: .08em; text-transform: uppercase; }
+    h2 { margin: 10px 0 12px; font-size: clamp(1.9rem, 4vw, 2.75rem); letter-spacing: -0.03em; line-height: 1.1; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 1.06rem; }
+
+    /* Bento grid */
+    .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .tile {
+      position: relative; overflow: hidden; border-radius: 22px; padding: 26px;
+      background: var(--surface); border: 1px solid var(--border);
     }
-
-    .card h3 {
-      margin: 0 0 6px;
-      font-size: 1rem;
+    .tile::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(400px 200px at 0% 0%, rgba(59,140,255,0.08), transparent 70%); }
+    .tile h3 { margin: 0 0 8px; font-size: 1.18rem; letter-spacing: -0.01em; }
+    .tile p { margin: 0; color: var(--muted); font-size: 0.97rem; }
+    .t-facts { grid-column: span 4; }
+    .t-brief { grid-column: span 2; }
+    .t-numbers { grid-column: span 2; }
+    .t-sources { grid-column: span 2; }
+    .t-widget { grid-column: span 2; }
+    .icon {
+      width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; margin-bottom: 16px;
+      background: linear-gradient(160deg, rgba(59,140,255,0.22), rgba(57,208,255,0.08)); color: var(--blue); border: 1px solid var(--border);
     }
+    .icon svg { width: 20px; height: 20px; }
 
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.95rem;
+    .demo { margin-top: 20px; border-radius: 16px; border: 1px solid var(--border); background: var(--bg-2); padding: 14px; font-size: 0.9rem; }
+    .demo-fact { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 10px 4px; border-bottom: 1px dashed var(--border); }
+    .demo-fact:last-child { border-bottom: 0; }
+    .demo-fact .tag { font-weight: 700; color: var(--blue); background: rgba(59,140,255,0.12); padding: 3px 9px; border-radius: 999px; font-size: 0.8rem; white-space: nowrap; }
+    .demo-fact .src { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+    .demo-fact .src svg { width: 13px; height: 13px; vertical-align: -2px; color: var(--green); }
+
+    .notif { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+    .notif img { width: 30px; height: 30px; border-radius: 8px; }
+    .notif b { font-size: 0.86rem; }
+    .notif small { display: block; color: var(--muted); font-size: 0.8rem; line-height: 1.35; }
+    .toggles { display: grid; gap: 8px; margin-top: 12px; }
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.86rem; }
+    .switch { width: 34px; height: 20px; border-radius: 999px; background: var(--green); position: relative; flex: none; }
+    .switch::after { content: ""; position: absolute; top: 2px; right: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+
+    .num-row { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 0.86rem; }
+    .num-row:last-child { border-bottom: 0; }
+    .num-row b { color: var(--blue); white-space: nowrap; }
+    .num-row span { color: var(--muted); text-align: right; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-2); font-size: 0.82rem; font-weight: 600; }
+    .chip img { width: 14px; height: 14px; filter: var(--logo-filter); opacity: .85; }
+    .chip.on { border-color: rgba(59,140,255,0.5); background: rgba(59,140,255,0.12); }
+
+    .mini-widget { margin-top: 20px; width: 168px; aspect-ratio: 1; border-radius: 26px; padding: 16px; background: var(--surface-2); border: 1px solid var(--border); box-shadow: 0 14px 30px rgba(0,0,0,0.25); }
+    .mini-widget .label { color: var(--blue); font-size: 0.68rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .mini-widget strong { display: block; margin-top: 6px; font-size: 0.86rem; line-height: 1.3; }
+
+    /* How it works */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+    .step { border-radius: 20px; padding: 26px; border: 1px solid var(--border); background: var(--surface); }
+    .step::before {
+      counter-increment: step; content: counter(step, decimal-leading-zero);
+      display: inline-block; font-weight: 800; font-size: 0.85rem; color: var(--blue); margin-bottom: 14px;
+      padding: 4px 10px; border-radius: 999px; background: rgba(59,140,255,0.12);
     }
+    .step h3 { margin: 0 0 8px; font-size: 1.1rem; }
+    .step p { margin: 0; color: var(--muted); font-size: 0.96rem; }
 
-    .logos {
-      border-top: 1px solid var(--border);
-      padding: 22px 0 36px;
+    /* Newsletter */
+    .news {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center;
+      border-radius: 28px; padding: 44px; border: 1px solid var(--border);
+      background: radial-gradient(600px 300px at 100% 0%, rgba(59,140,255,0.16), transparent 70%), var(--surface);
     }
-
-    .logos h4 {
-      margin: 0 0 14px;
-      font-size: 0.92rem;
-      color: var(--muted);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    .news h2 { margin-top: 8px; }
+    .news p { color: var(--muted); margin: 0 0 22px; }
+    .news form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .news input[type="email"] {
+      flex: 1 1 240px; min-width: 0; font: inherit; padding: 13px 16px; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text);
     }
+    .news input::placeholder { color: var(--faint); }
+    .news button:disabled { opacity: 0.6; cursor: default; transform: none; }
+    .newsletter-status { min-height: 1.5em; margin-top: 12px; font-size: 0.95rem; }
+    .newsletter-status.ok { color: var(--green); }
+    .newsletter-status.error { color: #f87171; }
+    .fineprint { margin-top: 6px; color: var(--faint); font-size: 0.82rem; }
+    .issue { border-radius: 18px; background: var(--surface-2); border: 1px solid var(--border); padding: 20px; box-shadow: var(--shadow); font-size: 0.9rem; }
+    .issue .brandline { font-weight: 800; }
+    .issue .brandline span { color: var(--blue); }
+    .issue .date { color: var(--faint); font-size: 0.78rem; margin-top: 8px; }
+    .issue h4 { margin: 4px 0 8px; font-size: 1.05rem; line-height: 1.3; }
+    .issue .story { padding: 10px 0; border-top: 1px solid var(--border); }
+    .issue .story small { color: var(--blue); font-weight: 700; font-size: 0.74rem; }
+    .issue .story div { font-weight: 600; margin-top: 2px; }
 
-    .logo-row {
-      display: grid;
-      grid-template-columns: repeat(8, minmax(0, 1fr));
-      gap: 10px;
-      align-items: center;
-    }
+    /* FAQ */
+    .faq { max-width: 760px; margin: 0 auto; display: grid; gap: 10px; }
+    details { border-radius: 16px; border: 1px solid var(--border); background: var(--surface); padding: 18px 20px; }
+    summary { cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--blue); font-weight: 700; font-size: 1.2rem; line-height: 1; }
+    details[open] summary::after { content: "–"; }
+    details p { margin: 12px 0 0; color: var(--muted); }
 
-    .logo-chip {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-      height: 54px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    /* Final CTA + footer */
+    .final { text-align: center; padding: 80px 0 90px; }
+    .final h2 { max-width: 720px; margin: 0 auto 14px; }
+    .final p { color: var(--muted); margin: 0 auto 28px; max-width: 560px; }
+    footer { border-top: 1px solid var(--border); padding: 28px 0 40px; color: var(--muted); font-size: 0.9rem; }
+    .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { text-decoration: none; }
+    .footer-links a:hover { color: var(--text); }
 
-    .logo-chip img {
-      max-width: 100%;
-      max-height: 28px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .footer-links {
-      display: flex;
-      gap: 16px; 
-    }
-
-    .newsletter {
-      border-top: 1px solid var(--border);
-      padding: 32px 0 40px;
-    }
-
-    .newsletter-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 24px;
-      display: grid;
-      gap: 10px;
-      max-width: 680px;
-    }
-
-    .newsletter h2 { margin: 0; font-size: 1.35rem; letter-spacing: -0.01em; }
-    .newsletter p { margin: 0; color: var(--muted); }
-
-    .newsletter form {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-      flex-wrap: wrap;
-    }
-
-    .newsletter input[type="email"] {
-      flex: 1 1 240px;
-      min-width: 0;
-      font: inherit;
-      padding: 11px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    .newsletter button {
-      font: inherit;
-      font-weight: 600;
-      padding: 11px 18px;
-      border-radius: 12px;
-      border: 0;
-      background: var(--blue);
-      color: #fff;
-      cursor: pointer;
-    }
-
-    .newsletter button:disabled { opacity: 0.6; cursor: default; }
-    .newsletter-status { min-height: 1.5em; font-size: 0.95rem; }
-    .newsletter-status.ok { color: #16a34a; }
-    .newsletter-status.error { color: #dc2626; }
-    .visually-hidden { position: absolute; left: -9999px; }
-
+    /* ---------- Responsive ---------- */
     @media (max-width: 980px) {
-      .cards { grid-template-columns: 1fr; }
-      .logo-row { grid-template-columns: repeat(4, 1fr); }
+      .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 48px; text-align: left; }
+      .stage { min-height: 640px; }
+      .t-facts, .t-brief, .t-numbers, .t-sources, .t-widget { grid-column: span 6; }
+      .steps { grid-template-columns: 1fr; }
+      .news { grid-template-columns: 1fr; padding: 28px; }
     }
-
+    @media (max-width: 720px) {
+      .nav-links a:not(.btn) { display: none; }
+    }
     @media (max-width: 560px) {
-      .hero { padding-top: 42px; }
-      .logo-row { grid-template-columns: repeat(3, 1fr); }
-      .nav { height: 58px; }
+      .lede { font-size: 1.04rem; }
+      .phone { transform: scale(0.9); transform-origin: top center; margin-bottom: -60px; }
+      .stage { min-height: 0; padding-top: 72px; padding-bottom: 56px; }
+      .float-notif { left: 0; width: 250px; top: 0; }
+      .float-widget { display: none; } /* shown in the Widget tile below instead */
+      .float-streak { bottom: 0; }
+      .logo-row { gap: 22px 28px; }
+      .logo-row img { height: 22px; }
+      .tile, .step { padding: 22px; }
+      .demo-fact { grid-template-columns: 1fr; gap: 4px; }
+      section.block { padding: 56px 0; }
     }
   </style>
 </head>
 
 <body>
+  <div class="bg-glow" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
 
-<header>
-  <div class="container nav">
-    <div class="brand">
-      <img src="assets/groundtruth-logo.png" alt="Ground Truth logo" />
-      <span>Ground Truth</span>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="Ground Truth home">
+        <img src="assets/groundtruth-logo.png" alt="" />
+        <span>Ground Truth</span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#newsletter">Newsletter</a>
+        <a class="btn btn-primary btn-small" href="https://apps.apple.com/us/app/groundtruth-ai/id6759272723" target="_blank" rel="noopener noreferrer">Get the app</a>
+      </nav>
     </div>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#newsletter">Newsletter</a>
-      <a class="primary" href="privacy.html">Privacy Policy</a>
-    </nav>
-  </div>
-</header>
+  </header>
 
-<main class="container">
-  <section class="hero">
-    <span class="pill">Ground Truth iOS</span>
+  <main id="top">
+    <!-- Hero -->
+    <section class="container hero">
+      <div>
+        <span class="eyebrow"><b>NEW</b> Every key fact, verified at the source</span>
+        <h1>AI news, <span class="gradient-text">straight from the source.</span></h1>
+        <p class="lede">
+          Ground Truth reads the official announcements from OpenAI, Anthropic, Google DeepMind, NVIDIA and more,
+          and turns them into short, neutral summaries. Every key fact links to the exact sentence it came from.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary appstore" href="https://apps.apple.com/us/app/groundtruth-ai/id6759272723" target="_blank" rel="noopener noreferrer" aria-label="Download Ground Truth on the App Store">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            <span><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+          <a class="btn btn-ghost" href="#newsletter">Get the weekly email</a>
+        </div>
+        <div class="hero-proof">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Official sources only</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>No hype, no opinions</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>Facts linked to the source</span>
+        </div>
+      </div>
 
-    <h1>Personalized AI & ML news, summarized for you.</h1>
+      <div class="stage" aria-label="Ground Truth app preview">
+        <div class="phone">
+          <div class="screen">
+            <div class="island" aria-hidden="true"></div>
+            <div class="bar"><i aria-hidden="true">‹</i>Summary<i aria-hidden="true">⌑</i></div>
+            <h3>Anthropic launches its IPO roadshow</h3>
+            <div class="meta"><img src="assets/anthropic.svg" alt="" />Anthropic · Nov 10, 2026</div>
+            <p>Anthropic began the roadshow for its proposed initial public offering of Class A common stock and has applied to list on the Nasdaq Global Select Market.</p>
+            <div class="facts">
+              <h4>Key facts</h4>
+              <div class="fact"><span>825,000,000 shares proposed for the offering<br /><a href="#how">See it in the source ↗</a></span></div>
+              <div class="fact"><span>Price expected between $70.00 and $78.00 per share<br /><a href="#how">See it in the source ↗</a></span></div>
+              <div class="fact"><span>To list on Nasdaq under the symbol ANT<br /><a href="#how">See it in the source ↗</a></span></div>
+              <div class="verified">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 2l2.4 2.1 3.2-.3.9 3.1 2.8 1.6-1.2 3 1.2 3-2.8 1.6-.9 3.1-3.2-.3L12 22l-2.4-2.1-3.2.3-.9-3.1-2.8-1.6 1.2-3-1.2-3 2.8-1.6.9-3.1 3.2.3z"/><path d="M8.5 12l2.4 2.4 4.6-4.8"/></svg>
+                Every fact links to the exact sentence in the original article.
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <p class="subtitle">
-      Stay current with trusted sources, fast factual summaries, and relevant alerts.
-    </p>
+        <div class="float float-notif" aria-hidden="true">
+          <img src="assets/groundtruth-logo.png" alt="" />
+          <div><span class="when">8:00 AM</span><b>Your daily AI briefing</b><small>Anthropic launches IPO roadshow; Google expands Gemini across devices</small></div>
+        </div>
+        <div class="float float-widget" aria-hidden="true">
+          <div class="label">Your AI briefing</div>
+          <strong>Google DeepMind advances AI for cybersecurity and software verification</strong>
+          <small>• Gemini 4 Carbon is now available</small>
+        </div>
+        <div class="float float-streak" aria-hidden="true"><span>🔥</span> 12-day reading streak</div>
+      </div>
+    </section>
 
-    <a
-      class="appstore-btn"
-      href="https://apps.apple.com/us/app/ground-truth/idYOUR_APP_ID"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Download Ground Truth on the App Store"
-    >
-       Download on the App Store
-    </a>
-  </section>
+    <!-- Logos -->
+    <section class="container logos" aria-label="Sources">
+      <p>Summarized from official announcements by</p>
+      <div class="logo-row">
+        <img src="assets/openai.svg" alt="OpenAI" />
+        <img src="assets/anthropic.svg" alt="Anthropic" />
+        <img src="assets/google.svg" alt="Google" />
+        <img src="assets/microsoft.svg" alt="Microsoft" />
+        <img src="assets/nvidia.svg" alt="NVIDIA" />
+        <img src="assets/meta.svg" alt="Meta" />
+        <img class="wide" src="assets/aws.svg" alt="AWS" />
+        <img src="assets/apple.svg" alt="Apple" />
+        <img src="assets/mistral.svg" alt="Mistral AI" />
+        <img class="keep-detail" src="assets/huggingface.svg" alt="Hugging Face" />
+        <img src="assets/github.svg" alt="GitHub" />
+        <img class="wide" src="assets/ibm.svg" alt="IBM" />
+        <img src="assets/cloudflare.svg" alt="Cloudflare" />
+        <img src="assets/ollama.svg" alt="Ollama" />
+      </div>
+    </section>
 
-  <section id="features" class="cards" aria-label="Features">
-    <article class="card">
-      <h3>Source-first feed</h3>
-      <p>Select publishers you trust and get a feed tuned to your preferences.</p>
-    </article>
+    <!-- Features -->
+    <section class="block" id="features">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Features</div>
+          <h2>Everything important in AI. Nothing you have to <span style="white-space: nowrap">double-check.</span></h2>
+          <p>Built for people who need to know what actually shipped, without the hype cycle.</p>
+        </div>
 
-    <article class="card">
-      <h3>Concise summaries</h3>
-      <p>Read neutral, high-signal summaries and open the original article anytime.</p>
-    </article>
+        <div class="bento">
+          <article class="tile t-facts">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 12l2 2 4-4"/><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/></svg></div>
+            <h3>Verified key facts</h3>
+            <p>Numbers, prices, dates and availability, pulled from the article itself. Each fact is checked word for word against the original text, and one tap shows you the exact sentence it came from.</p>
+            <div class="demo" aria-hidden="true">
+              <div class="demo-fact"><span class="tag">$70–78 / share</span><span>Expected IPO price range</span><span class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> In source</span></div>
+              <div class="demo-fact"><span class="tag">$2 / $10 per 1M tokens</span><span>Gemini 4 Carbon API pricing</span><span class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> In source</span></div>
+              <div class="demo-fact"><span class="tag">46% fewer nodes</span><span>OpenSearch cluster after migration</span><span class="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> In source</span></div>
+            </div>
+          </article>
 
-    <article class="card">
-      <h3>Relevant notifications</h3>
-      <p>Get notified only for newly ingested stories after your device is registered.</p>
-    </article>
-  </section>
+          <article class="tile t-brief">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8a6 6 0 1112 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 003.4 0"/></svg></div>
+            <h3>Daily &amp; weekly briefings</h3>
+            <p>The top stories from your sources in under a minute, delivered around 8am your time.</p>
+            <div class="demo" aria-hidden="true">
+              <div class="notif"><img src="assets/groundtruth-logo.png" alt="" /><div><b>Your weekly AI briefing</b><small>Google and AWS advance AI integration and agentic automation</small></div></div>
+              <div class="toggles">
+                <div class="toggle-row">Daily briefing <span class="switch"></span></div>
+                <div class="toggle-row">Weekly briefing <span class="switch"></span></div>
+              </div>
+            </div>
+          </article>
 
-  <section class="logos" aria-label="Sources">
-    <h4>Sources across leading AI organizations</h4>
-    <div class="logo-row">
-      <div class="logo-chip"><img src="assets/openai.svg" alt="OpenAI" /></div>
-      <div class="logo-chip"><img src="assets/google.svg" alt="Google" /></div>
-      <div class="logo-chip"><img src="assets/aws.svg" alt="AWS" /></div>
-      <div class="logo-chip"><img src="assets/microsoft.svg" alt="Microsoft" /></div>
-      <div class="logo-chip"><img src="assets/nvidia.svg" alt="NVIDIA" /></div>
-      <div class="logo-chip"><img src="assets/meta.svg" alt="Meta" /></div>
-      <div class="logo-chip"><img src="assets/huggingface.svg" alt="Hugging Face" /></div>
-      <div class="logo-chip"><img src="assets/ibm.svg" alt="IBM" /></div>
+          <article class="tile t-numbers">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+            <h3>Numbers of the week</h3>
+            <p>The figures that defined the week, each one tied to its source.</p>
+            <div class="demo" aria-hidden="true">
+              <div class="num-row"><b>825M shares</b><span>Anthropic</span></div>
+              <div class="num-row"><b>$2 / $10</b><span>Google DeepMind</span></div>
+              <div class="num-row"><b>46% fewer nodes</b><span>AWS</span></div>
+            </div>
+          </article>
+
+          <article class="tile t-sources">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h12M3 18h7"/></svg></div>
+            <h3>Your sources, your feed</h3>
+            <p>Follow the companies you care about and get alerts only for what they publish.</p>
+            <div class="chips" aria-hidden="true">
+              <span class="chip on"><img src="assets/openai.svg" alt="" />OpenAI</span>
+              <span class="chip on"><img src="assets/anthropic.svg" alt="" />Anthropic</span>
+              <span class="chip"><img src="assets/google.svg" alt="" />Google</span>
+              <span class="chip on"><img src="assets/nvidia.svg" alt="" />NVIDIA</span>
+              <span class="chip"><img src="assets/mistral.svg" alt="" />Mistral</span>
+              <span class="chip"><img src="assets/github.svg" alt="" />GitHub</span>
+            </div>
+          </article>
+
+          <article class="tile t-widget">
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></div>
+            <h3>Home Screen widget</h3>
+            <p>Today's briefing at a glance, personalized to the sources you follow.</p>
+            <div class="mini-widget" aria-hidden="true">
+              <div class="label">Your AI briefing</div>
+              <strong>Mistral, NVIDIA and GitHub ship new developer tools</strong>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="block" id="how">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">How it works</div>
+          <h2>Ground truth, not guesswork.</h2>
+          <p>Most AI news is a summary of a summary. Ground Truth goes to the original.</p>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <h3>We read the original</h3>
+            <p>Ground Truth collects announcements directly from each company's own blog and newsroom, not from aggregators or social posts.</p>
+          </div>
+          <div class="step">
+            <h3>AI summarizes only what's there</h3>
+            <p>The full article text is summarized neutrally. Nothing is added from outside the article: no hype, no speculation, no opinions.</p>
+          </div>
+          <div class="step">
+            <h3>Every fact is checked</h3>
+            <p>Each key fact must match a quote in the original word for word, or it's dropped. Tap any fact to see the sentence it came from.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="block" id="newsletter">
+      <div class="container">
+        <div class="news">
+          <div>
+            <div class="kicker">Newsletter</div>
+            <h2>Ground Truth Weekly</h2>
+            <p>The week's most important AI news, summarized from the companies' own announcements. Every Monday morning, free.</p>
+            <form id="newsletter-form" novalidate>
+              <label for="newsletter-email" class="visually-hidden">Email address</label>
+              <input id="newsletter-email" type="email" name="email" placeholder="you@company.com" autocomplete="email" required />
+              <button class="btn btn-primary" type="submit">Subscribe</button>
+            </form>
+            <div id="newsletter-status" class="newsletter-status" role="status" aria-live="polite"></div>
+            <div class="fineprint">We'll email you once to confirm. Unsubscribe anytime.</div>
+          </div>
+          <div class="issue" aria-hidden="true">
+            <div class="brandline">Ground Truth <span>Weekly</span></div>
+            <div class="date">Nov 4 – Nov 11, 2026</div>
+            <h4>AI advances in agentic systems, data integration, and model efficiency</h4>
+            <div class="story"><small>01 · Google DeepMind</small><div>Gemini 4 Carbon is now available</div></div>
+            <div class="story"><small>02 · Anthropic</small><div>Anthropic launches its IPO roadshow</div></div>
+            <div class="story"><small>03 · AWS</small><div>Autonomous treasury agents on Amazon Bedrock</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="block" id="faq">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">FAQ</div>
+          <h2>Questions, answered.</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Where does Ground Truth get its news?</summary>
+            <p>Directly from official company sources, such as the blogs and newsrooms of OpenAI, Anthropic, Google DeepMind, Microsoft, NVIDIA, Meta, AWS, Apple, Mistral AI, Hugging Face and others. You choose which ones you follow.</p>
+          </details>
+          <details>
+            <summary>How are the summaries written?</summary>
+            <p>An AI model summarizes the full text of each announcement, using only what the article says. Summaries are neutral by design: no hype, opinions or speculation.</p>
+          </details>
+          <details>
+            <summary>What does "verified key facts" mean?</summary>
+            <p>Each key fact comes with a quote from the article. Before it's shown, Ground Truth checks that the quote appears in the original word for word, and drops any fact that can't be matched. Tap "See it in the source" to read the exact sentence.</p>
+          </details>
+          <details>
+            <summary>Can I get the news without the app?</summary>
+            <p>Yes. Ground Truth Weekly is a free email every Monday with the week's top stories and its most important numbers.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="container final">
+      <h2>Know what actually shipped in AI.</h2>
+      <p>Ground Truth for iPhone: verified summaries, daily briefings, and a widget for your Home Screen.</p>
+      <a class="btn btn-primary appstore" href="https://apps.apple.com/us/app/groundtruth-ai/id6759272723" target="_blank" rel="noopener noreferrer" aria-label="Download Ground Truth on the App Store">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+        <span><small>Download on the</small><strong>App Store</strong></span>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <span>© <span id="year"></span> Ground Truth</span>
+      <div class="footer-links">
+        <a href="#newsletter">Newsletter</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="support.html">Support</a>
+        <a href="https://apps.apple.com/us/app/groundtruth-ai/id6759272723" target="_blank" rel="noopener noreferrer">App Store</a>
+      </div>
     </div>
-  </section>
-  <section id="newsletter" class="newsletter" aria-labelledby="newsletter-title">
-    <div class="newsletter-box">
-      <h2 id="newsletter-title">Ground Truth Weekly</h2>
-      <p>The week's most important AI news, summarized from the companies' own announcements. Every Monday, free.</p>
-      <form id="newsletter-form" novalidate>
-        <label for="newsletter-email" class="visually-hidden">Email address</label>
-        <input id="newsletter-email" type="email" name="email" placeholder="you@company.com" autocomplete="email" required />
-        <button type="submit">Subscribe</button>
-      </form>
-      <div id="newsletter-status" class="newsletter-status" role="status" aria-live="polite"></div>
-    </div>
-  </section>
-</main>
+  </footer>
 
-<footer class="container footer">
-  <span>© <span id="year"></span> Ground Truth</span>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-  <div class="footer-links">
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="support.html">Support</a>
-  </div>
-</footer>
+    // Newsletter sign-up (double opt-in). For local testing, add ?api=http://localhost:8000 to the page URL.
+    (function () {
+      var apiBase = new URLSearchParams(location.search).get('api') || 'https://ground-truth-production.up.railway.app';
+      var form = document.getElementById('newsletter-form');
+      var input = document.getElementById('newsletter-email');
+      var status = document.getElementById('newsletter-status');
+      var button = form.querySelector('button');
 
-<script>
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Newsletter sign-up. For local testing, add ?api=http://localhost:8000 to the page URL.
-  (function () {
-    var apiBase = new URLSearchParams(location.search).get('api') || 'https://ground-truth-production.up.railway.app';
-    var form = document.getElementById('newsletter-form');
-    var input = document.getElementById('newsletter-email');
-    var status = document.getElementById('newsletter-status');
-    var button = form.querySelector('button');
-
-    function show(message, kind) {
-      status.textContent = message;
-      status.className = 'newsletter-status' + (kind ? ' ' + kind : '');
-    }
-
-    form.addEventListener('submit', function (event) {
-      event.preventDefault();
-      var email = input.value.trim();
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-        show('Please enter a valid email address.', 'error');
-        return;
+      function show(message, kind) {
+        status.textContent = message;
+        status.className = 'newsletter-status' + (kind ? ' ' + kind : '');
       }
-      button.disabled = true;
-      show('Subscribing…');
-      fetch(apiBase + '/v1/newsletter/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
-      })
-        .then(function (response) {
-          if (!response.ok) { throw new Error('Request failed'); }
-          return response.json();
-        })
-        .then(function (data) {
-          form.reset();
-          show(data.status === 'subscribed'
-            ? "You're already subscribed. See you Monday!"
-            : 'Almost done: check your inbox for a confirmation email.', 'ok');
-        })
-        .catch(function () {
-          show('Something went wrong. Please try again in a moment.', 'error');
-        })
-        .finally(function () { button.disabled = false; });
-    });
-  })();
-</script>
 
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var email = input.value.trim();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+          show('Please enter a valid email address.', 'error');
+          return;
+        }
+        button.disabled = true;
+        show('Subscribing…');
+        fetch(apiBase + '/v1/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
+        })
+          .then(function (response) {
+            if (!response.ok) { throw new Error('Request failed'); }
+            return response.json();
+          })
+          .then(function (data) {
+            form.reset();
+            show(data.status === 'subscribed'
+              ? "You're already subscribed. See you Monday!"
+              : 'Almost done: check your inbox for a confirmation email.', 'ok');
+          })
+          .catch(function () {
+            show('Something went wrong. Please try again in a moment.', 'error');
+          })
+          .finally(function () { button.disabled = false; });
+      });
+    })();
+  </script>
 </body>
 </html>
-
